@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/NeilElvirsson/Experience-points-IRL/internal/domain"
+	"github.com/NeilElvirsson/Experience-points-IRL/internal/models"
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -22,22 +22,22 @@ func New(dbPath string) sqliteUserRepository {
 	}
 }
 
-func (sqlite sqliteUserRepository) LoginUser(userName string, password string) (domain.User, error) {
+func (sqlite sqliteUserRepository) LoginUser(userName string, password string) (models.User, error) {
 
 	db, err := sql.Open("sqlite3", sqlite.databasePath)
 	if err != nil {
-		return domain.User{}, err
+		return models.User{}, err
 	}
 	defer db.Close()
 
 	stmt, err := db.Prepare("SELECT user_name FROM user WHERE user_name = ? AND password = ?")
 	if err != nil {
-		return domain.User{}, err
+		return models.User{}, err
 	}
 
 	rows, err := stmt.Query(userName, password)
 	if err != nil {
-		return domain.User{}, err
+		return models.User{}, err
 	}
 
 	if rows.Next() {
@@ -45,20 +45,20 @@ func (sqlite sqliteUserRepository) LoginUser(userName string, password string) (
 
 		err := rows.Scan(&tempUserName)
 		if err != nil {
-			return domain.User{}, err
+			return models.User{}, err
 		}
 
-		return domain.User{
+		return models.User{
 			UserName: tempUserName,
 			Password: password,
 		}, nil
 
 	}
-	return domain.User{}, ErrUserNotFound
+	return models.User{}, ErrUserNotFound
 
 }
 
-func (sqlite sqliteUserRepository) AddUser(user domain.User) error {
+func (sqlite sqliteUserRepository) AddUser(user models.User) error {
 
 	id, err := uuid.NewRandom()
 	if err != nil {
