@@ -1,10 +1,10 @@
 package userrepository
 
 import (
-	"github.com/NeilElvirsson/Experience-points-IRL/internal/domain"
+	"github.com/NeilElvirsson/Experience-points-IRL/internal/models"
 )
 
 type UserRepository interface {
-	LoginUser(string, string) (domain.User, error)
-	AddUser(domain.User) error
+	LoginUser(string, string) (models.User, error)
+	AddUser(models.User) error
 }
