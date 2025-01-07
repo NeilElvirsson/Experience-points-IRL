@@ -1,11 +1,14 @@
 # Experience-points-IRL
 
-## Beskrivning
+## Description
 
- Detta API syftar till att hjälpa användare förbättra sina liv genom att samla experience points (XP) baserat på deras verkliga prestationer. Precis som i TV-spel där man “levlar upp” ska användarna kunna göra detsamma i det verkliga livet genom att registrera aktiviteter som läsning, träning eller hushållssysslor.
-När en användare loggar aktiviteter via applikationen registreras dessa som XP i en databas. När användaren uppnått en viss mängd XP, uppgraderas de till en ny nivå. Syftet är att skapa motivation genom att ge en tydlig bild av personlig progression över tid.
+This API is designed to help users improve their lives by collecting experience points (XP) based on their real-life achievements. Much like in video games where players "level up," users can do the same in real life by logging activities such as reading, exercising, or completing household tasks. When a user logs an activity through the application, it is recorded as XP in a database. Once the user reaches a certain amount of XP, they are upgraded to a new level. The goal is to foster motivation by providing a clear picture of personal progress over time.
 
-## Funktioner
+## Features
+
+## How to use
+
+## 
 
 
 
