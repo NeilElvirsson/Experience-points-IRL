@@ -30,7 +30,7 @@ func (sqlite sqliteUserRepository) LoginUser(userName string, password string) (
 	}
 	defer db.Close()
 
-	stmt, err := db.Prepare("SELECT user_name FROM user WHERE user_name = ? AND password = ?")
+	stmt, err := db.Prepare("SELECT id, user_name FROM user WHERE user_name = ? AND password = ?")
 	if err != nil {
 		return models.User{}, err
 	}
@@ -41,15 +41,17 @@ func (sqlite sqliteUserRepository) LoginUser(userName string, password string) (
 	}
 
 	if rows.Next() {
+		var tempUserId string
 		var tempUserName string
 
-		err := rows.Scan(&tempUserName)
+		err := rows.Scan(&tempUserId, &tempUserName)
 		if err != nil {
 			return models.User{}, err
 		}
 
 		return models.User{
 			UserName: tempUserName,
+			UserId:   tempUserId,
 			Password: password,
 		}, nil
 
