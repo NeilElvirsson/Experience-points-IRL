@@ -36,6 +36,8 @@ func (ltrepo logTaskRepository) AddLogEntry(userId string, taskId string) error 
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
+
 	result, err := stmt.Exec(id.String(), userId, taskId, time.Now().Unix())
 	if err != nil {
 		return err

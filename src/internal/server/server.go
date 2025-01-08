@@ -137,6 +137,7 @@ func (this Server) loginUser(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	var body addUserRequestBody
@@ -214,6 +215,14 @@ func (this Server) addLogEntry() http.Handler {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
+		}
+
+		err = this.logrepository.AddLogEntry(session.UserId, body.TaskId)
+		if err != nil {
+			fmt.Println("Failed to add log", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+
 		}
 		fmt.Printf("Add task %s to user %s", body.TaskId, session.UserId)
 		w.WriteHeader(http.StatusOK)
