@@ -34,11 +34,13 @@ func (sqlite sqliteUserRepository) LoginUser(userName string, password string) (
 	if err != nil {
 		return models.User{}, err
 	}
+	defer stmt.Close()
 
 	rows, err := stmt.Query(userName, password)
 	if err != nil {
 		return models.User{}, err
 	}
+	defer rows.Close()
 
 	if rows.Next() {
 		var tempUserId string
@@ -77,6 +79,7 @@ func (sqlite sqliteUserRepository) AddUser(user models.User) error {
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
 
 	result, err := stmt.Exec(id.String(), user.UserName, user.Password)
 	if err != nil {
