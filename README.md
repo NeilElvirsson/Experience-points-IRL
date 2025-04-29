@@ -9,7 +9,8 @@ This API is designed to help users improve their lives by collecting experience 
 ### 1. Clone the Project
 ```bash
 git clone https://github.com/NeilElvirsson/Experience-points-IRL/
-
+```
+### 2. Navigate 
 cd Experience-points-IRL/src
 
 go run main.go
