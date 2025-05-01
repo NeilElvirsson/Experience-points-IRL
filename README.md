@@ -11,12 +11,30 @@ This API is designed to help users improve their lives by collecting experience 
 git clone https://github.com/NeilElvirsson/Experience-points-IRL/
 ```
 ### 2. Navigate 
+```bash
 cd Experience-points-IRL/src
+```
 
+### 3. Start applikation
+```bash
 go run main.go
 ```
 
-### 2. 
+### 4. Start Bruno (or preferred API testing tool)
+## 📡 API Endpoints
+
+### 🔐 User Authentication
+
+#### POST /user/add
+Create a new user.
+
+**Request Body**
+```json
+{
+  "userName": "your_name",
+  "password": "your_password"
+}
+```
 
 
 
