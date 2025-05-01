@@ -21,9 +21,12 @@ go run main.go
 ```
 
 ### 4. Start Bruno (or preferred API testing tool)
-## 📡 API Endpoints
 
-### 🔐 User Authentication
+#### 📡 API Endpoints
+
+#### GET /health
+Checks if server is alive.
+
 
 #### POST /user/add
 Create a new user.
@@ -35,6 +38,45 @@ Create a new user.
   "password": "your_password"
 }
 ```
+
+#### POST /user/login
+Login your'e user.
+
+**Request Body**
+```json
+{
+  "userName": "your_name",
+  "password": "your_password"
+}
+```
+You will get a validation token for your'e users id.
+
+#### GET /user/validate
+Validate your'e user.
+
+**Header**
+```name : value
+x-session: <your-session-token>
+```
+#### POST /log
+Adds a task to your'e user.
+
+```json
+{
+  "userId": "<your_user_id>",
+  "taskId": "<task_id>"
+}
+```
+**Header**
+```name : value 
+x-session: <your-session-token>
+```
+
+
+
+
+
+
 
 
 
