@@ -22,7 +22,7 @@ go run main.go
 
 ### 4. Start Bruno (or preferred API testing tool)
 
-#### 📡 API Endpoints
+#### API Endpoints
 
 #### GET /health
 Checks if server is alive.
@@ -55,7 +55,8 @@ You will get a validation token for your'e users id.
 Validate your'e user.
 
 **Header**
-```name : value
+Name : Value
+```
 x-session: <your-session-token>
 ```
 #### POST /log
@@ -68,7 +69,8 @@ Adds a task to your'e user.
 }
 ```
 **Header**
-```name : value 
+Name : Value 
+```
 x-session: <your-session-token>
 ```
 
