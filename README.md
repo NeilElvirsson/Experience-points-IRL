@@ -4,6 +4,8 @@
 
 This API is designed to help users improve their lives by collecting experience points (XP) based on their real-life achievements. Much like in video games where players "level up," users can do the same in real life by logging activities such as reading, exercising, or completing household tasks. When a user logs an activity through the application, it is recorded as XP in a database. Once the user reaches a certain amount of XP, they are upgraded to a new level. The goal is to foster motivation by providing a clear picture of personal progress over time.
 
+---
+
 ## Getting Started 
 
 ### 1. Clone the Project
@@ -19,6 +21,7 @@ cd Experience-points-IRL/src
 ```bash
 go run main.go
 ```
+---
 
 ### 4. Start Bruno (or preferred API testing tool)
 
@@ -62,6 +65,7 @@ x-session: <your-session-token>
 #### POST /log
 Adds a task to your'e user.
 
+**Request Body**
 ```json
 {
   "userId": "<your_user_id>",
@@ -73,6 +77,52 @@ Name : Value
 ```
 x-session: <your-session-token>
 ```
+
+#### POST /task/add
+Adds a task with a value.
+
+**Request Body**
+```json
+{
+  "taskName": "<task_name>",
+  "xpValue": "<int_value>"
+}
+```
+
+#### GET /log
+
+Get all logs.
+
+**Header**
+Name : Value 
+```
+x-session: <your-session-token>
+```
+#### GET /user/xp
+
+Get users xp value.
+
+**Header**
+Name : Value 
+```
+x-session: <your-session-token>
+```
+---
+
+## Planned Features
+
+- Database support (SQLite/PostgreSQL)
+
+- Frontend or mobile companion app
+
+- Recurring tasks and streaks
+
+- Badge system and achievements
+
+- Cloud deployment
+
+
+
 
 
 
