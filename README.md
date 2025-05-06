@@ -52,7 +52,7 @@ Login your'e user.
   "password": "your_password"
 }
 ```
-You will get a validation token for your'e users id.
+You will get a validation token for your'e users id that has a 15 minute expiration date.
 
 #### GET /user/validate
 Validate your'e user.
@@ -100,7 +100,7 @@ x-session: <your-session-token>
 ```
 #### GET /log/xp
 
-Get users xp value.
+Get users xp summary.
 
 **Header**
 Name : Value 
@@ -110,8 +110,6 @@ x-session: <your-session-token>
 ---
 
 ## Planned Features
-
-- Database support (SQLite/PostgreSQL)
 
 - Frontend or mobile companion app
 
