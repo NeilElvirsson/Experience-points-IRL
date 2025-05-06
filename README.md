@@ -121,7 +121,9 @@ x-session: <your-session-token>
 
 - Cloud deployment
 
+---
 
+Author: Neil Elvirsson 2025©
 
 
 
