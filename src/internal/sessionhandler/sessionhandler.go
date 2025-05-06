@@ -34,8 +34,8 @@ func (this SessionHandler) StartSession(userName string, userId string) (string,
 	if err != nil {
 		fmt.Println(err)
 		return "", err
-
 	}
+
 	expiration := time.Now().Add(15 * time.Minute)
 
 	session := Session{
@@ -47,6 +47,7 @@ func (this SessionHandler) StartSession(userName string, userId string) (string,
 	this.activeSessions[sessionId.String()] = session
 
 	return sessionId.String(), nil
+
 }
 
 func (this SessionHandler) GetSession(sessionId string) (Session, error) {

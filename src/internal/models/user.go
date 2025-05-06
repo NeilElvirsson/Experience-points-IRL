@@ -5,3 +5,16 @@ type User struct {
 	UserId   string
 	Password string
 }
+
+type Log struct {
+	TaskId    string
+	Timestamp int
+	TaskName  string
+	XpValue   int
+}
+
+type XpSummary struct {
+	TotalXp  int
+	Level    int
+	Progress int
+}
