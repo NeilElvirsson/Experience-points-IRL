@@ -98,7 +98,7 @@ Name : Value
 ```
 x-session: <your-session-token>
 ```
-#### GET /user/xp
+#### GET /log/xp
 
 Get users xp value.
 
