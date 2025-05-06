@@ -109,6 +109,17 @@ x-session: <your-session-token>
 ```
 ---
 
+#### POST /user/logout
+
+Invalidates session.
+
+**Header**
+Name : Value 
+```
+x-session: <your-session-token>
+```
+---
+
 ## Planned Features
 
 - Frontend or mobile companion app
