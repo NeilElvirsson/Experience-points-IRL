@@ -8,7 +8,7 @@ import (
 
 func Test(uR userrepository.UserRepository) {
 
-	currentUser, err := uR.LoginUser("Mats", "stam")
+	currentUser, err := uR.LoginUser("Neil", "Lien")
 	if err != nil {
 		if err == userrepository.ErrUserNotFound {
 			fmt.Println("user not found")
@@ -19,13 +19,5 @@ func Test(uR userrepository.UserRepository) {
 	}
 
 	fmt.Printf("user: %s\n", currentUser.UserName)
-	/*
-		err := uR.AddUser(domain.User{
-			UserName: "Mats",
-			Password: "stam",
-		})
-		if err != nil {
-			fmt.Printf("failed to add user %s\n", err.Error())
-		}
-	*/
+
 }

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/NeilElvirsson/Experience-points-IRL/internal/logrepository"
 	"github.com/NeilElvirsson/Experience-points-IRL/internal/models"
@@ -15,9 +16,6 @@ import (
 	"github.com/NeilElvirsson/Experience-points-IRL/internal/taskrepository"
 	"github.com/NeilElvirsson/Experience-points-IRL/internal/userrepository"
 )
-
-//struct server exporteras, 2 vriabler 1 hoststring en port int
-//new dunc tar in host och port, sätter ny instans på severn och returnerar
 
 type Server struct {
 	host           string
@@ -52,6 +50,9 @@ func New(host string,
 	s.router.Handle("GET /user/validate", s.authMiddleware(s.validateUser()))
 	s.router.Handle("POST /log", s.authMiddleware(s.addLogEntry()))
 	s.router.Handle("POST /task/add", s.authMiddleware(s.addTask()))
+	s.router.Handle("GET /log", s.authMiddleware(s.getLogs()))
+	s.router.Handle("GET /log/xp", s.authMiddleware(s.getXpLevel()))
+	s.router.Handle("POST /user/logout", s.authMiddleware(s.logoutUser()))
 
 	return s
 }
@@ -62,6 +63,7 @@ func (this Server) authMiddleware(next http.Handler) http.Handler {
 		sessionId := req.Header.Get("x-session")
 
 		session, err := this.sessionHandler.GetSession(sessionId)
+
 		if err != nil {
 			if errors.Is(err, sessionhandler.ErrSessionNotFound) {
 				w.WriteHeader(http.StatusUnauthorized)
@@ -69,6 +71,12 @@ func (this Server) authMiddleware(next http.Handler) http.Handler {
 			}
 			fmt.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if session.Expiration.Before(time.Now()) {
+			this.sessionHandler.InValidateSession(sessionId)
+			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
 
@@ -182,7 +190,11 @@ func (this Server) loginUser(w http.ResponseWriter, req *http.Request) {
 	}
 	w.Header().Add("x-session", sessionId)
 
+	fmt.Println("userId: ", user.UserId)
+	fmt.Println("sessionId: ", sessionId)
+
 	w.WriteHeader(http.StatusOK)
+
 }
 
 func (this Server) validateUser() http.Handler {
@@ -265,7 +277,6 @@ func (this Server) addTask() http.Handler {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		//fmt.Println(session)
 
 		err = this.taskRepository.AddTask(body.TaskName, body.XpValue)
 		if err != nil {
@@ -274,8 +285,117 @@ func (this Server) addTask() http.Handler {
 			return
 		}
 		fmt.Printf("Added %s with value %v", body.TaskName, body.XpValue)
+
 		w.WriteHeader(http.StatusOK)
 
 	})
 
+}
+
+func (this Server) getLogs() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+
+		session, ok := req.Context().Value("session").(sessionhandler.Session)
+		if !ok {
+			fmt.Println("could not cast session")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		logs, err := this.logRepository.GetLogs(session.UserId)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		var responsBody []getResponseBody
+
+		responsBody = []getResponseBody{}
+
+		for _, log := range logs {
+
+			responsBody = append(responsBody, getResponseBody{
+				TaskId:    log.TaskId,
+				Timestamp: log.Timestamp,
+				TaskName:  log.TaskName,
+				XpValue:   log.XpValue,
+			})
+
+		}
+
+		bytes, err := json.Marshal(responsBody)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		_, err = w.Write(bytes)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+	})
+}
+
+func (this Server) getXpLevel() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+
+		session, ok := req.Context().Value("session").(sessionhandler.Session)
+		if !ok {
+			fmt.Println("Could not cast session")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		xpSummary, err := this.logRepository.GetXpLevel(session.UserId)
+		if err != nil {
+			fmt.Println("Could not get xp level")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		responsBody := getXpSummaryBody{
+			TotalXp:  xpSummary.TotalXp,
+			Level:    xpSummary.Level,
+			Progress: xpSummary.Progress,
+		}
+
+		bytes, err := json.Marshal(responsBody)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		_, err = w.Write(bytes)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+
+		}
+
+	})
+
+}
+
+func (this Server) logoutUser() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+
+		session, ok := req.Context().Value("session").(sessionhandler.Session)
+		if !ok {
+			fmt.Println("Could not cast session")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		this.sessionHandler.InValidateSession(session.SessionId.String())
+		w.WriteHeader(http.StatusOK)
+		fmt.Println("hello,", session.SessionId)
+
+	})
 }

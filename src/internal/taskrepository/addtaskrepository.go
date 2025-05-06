@@ -50,6 +50,7 @@ func (atrepo addTaskRepository) AddTask(taskName string, xpValue int) error {
 
 		fmt.Println("failed to add task")
 	}
+	fmt.Println("Task Id: ", id)
 	return nil
 
 }
