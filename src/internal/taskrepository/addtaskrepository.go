@@ -7,6 +7,8 @@ import (
 	"github.com/google/uuid"
 )
 
+// Package taskrepository handles all interactions with the database related to tasks.
+
 type addTaskRepository struct {
 	databasePath string
 }

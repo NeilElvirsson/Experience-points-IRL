@@ -11,8 +11,9 @@ import (
 	"github.com/google/uuid"
 )
 
-//
-//
+// logTaskRepository is responsible for handling all database interactions
+// related to user task logs, XP calculations, and level tracking.
+// It encapsulates SQL logic for inserting and querying log and task data.
 
 var ErrLogNotFound = errors.New("log not found")
 

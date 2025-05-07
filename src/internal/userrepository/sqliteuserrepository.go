@@ -9,6 +9,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// Package userrepository provides functionality for managing user data in the database.
+// It supports creating new users and authenticating existing ones using SQLite.
+
 var ErrUserNotFound = errors.New("user not found")
 
 type sqliteUserRepository struct {

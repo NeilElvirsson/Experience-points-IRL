@@ -8,6 +8,10 @@ import (
 	"github.com/google/uuid"
 )
 
+// Package sessionhandler manages user session lifecycle, including creation, validation,
+// expiration, and invalidation of sessions. It stores active sessions in memory and provides
+// methods to interact with session data during authentication and authorization.
+
 var ErrSessionNotFound = errors.New("Session not found")
 
 type Session struct {
