@@ -17,6 +17,10 @@ import (
 	"github.com/NeilElvirsson/Experience-points-IRL/internal/userrepository"
 )
 
+// Package server sets up and starts the HTTP server, handles routing, and manages API endpoints.
+// It includes middleware for authentication and coordinates request handling by interacting with
+// user, session, task, and log repositories.
+
 type Server struct {
 	host           string
 	port           int
@@ -395,7 +399,6 @@ func (this Server) logoutUser() http.Handler {
 
 		this.sessionHandler.InValidateSession(session.SessionId.String())
 		w.WriteHeader(http.StatusOK)
-		fmt.Println("hello,", session.SessionId)
 
 	})
 }
